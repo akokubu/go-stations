@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/TechBowl-japan/go-stations/db"
+	"github.com/TechBowl-japan/go-stations/handler"
 	"github.com/TechBowl-japan/go-stations/handler/router"
 )
 
@@ -50,6 +51,8 @@ func realMain() error {
 
 	// NOTE: 新しいエンドポイントの登録はrouter.NewRouterの内部で行うようにする
 	mux := router.NewRouter(todoDB)
+	healthzHandler := handler.NewHealthzHandler()
+	mux.Handle(healthzHandler.Endpoint, healthzHandler)
 
 	// TODO: サーバーをlistenする
 	http.ListenAndServe(port, mux)

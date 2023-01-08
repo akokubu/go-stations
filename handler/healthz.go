@@ -9,11 +9,13 @@ import (
 )
 
 // A HealthzHandler implements health check endpoint.
-type HealthzHandler struct{}
+type HealthzHandler struct {
+	Endpoint string
+}
 
 // NewHealthzHandler returns HealthzHandler based http.Handler.
 func NewHealthzHandler() *HealthzHandler {
-	return &HealthzHandler{}
+	return &HealthzHandler{Endpoint: "/healthz"}
 }
 
 // ServeHTTP implements http.Handler interface.
