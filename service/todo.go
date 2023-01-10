@@ -23,7 +23,7 @@ func NewTODOService(db *sql.DB) *TODOService {
 func (s *TODOService) CreateTODO(ctx context.Context, subject, description string) (*model.TODO, error) {
 	const (
 		insert  = `INSERT INTO todos(subject, description) VALUES(?, ?)`
-		confirm = `SELECT subject, description, created_at, updated_at FROM todos WHERE id = ?`
+		confirm = `SELECT id, subject, description, created_at, updated_at FROM todos WHERE id = ?`
 	)
 
 	result, err := s.db.ExecContext(ctx, insert, subject, description)
@@ -36,7 +36,7 @@ func (s *TODOService) CreateTODO(ctx context.Context, subject, description strin
 		return nil, err
 	}
 	var model = &model.TODO{}
-	err = s.db.QueryRowContext(ctx, confirm, id).Scan(&model.Subject, &model.Description, &model.CreatedAt, &model.UpdatedAt)
+	err = s.db.QueryRowContext(ctx, confirm, id).Scan(&model.ID, &model.Subject, &model.Description, &model.CreatedAt, &model.UpdatedAt)
 	if err != nil {
 		return nil, err
 	}
